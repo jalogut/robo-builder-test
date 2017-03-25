@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * If we're running from phar load the phar autoload file.
+ */
+$pharPath = \Phar::running(true);
+if ($pharPath) {
+    define("BP", "$pharPath/../");
+    require_once BP . "vendor/autoload.php";
+} else {
+    define("BP", __DIR__ . "/../");
+    if (file_exists(BP . 'vendor/autoload.php')) {
+        require_once BP . 'vendor/autoload.php';
+    } elseif (file_exists(BP . '../../autoload.php')) {
+        require_once BP . '../../autoload.php';
+    }
+}
+
+
+$discovery = new \Consolidation\AnnotatedCommand\CommandFileDiscovery();
+$discovery->setSearchPattern('*Command.php');
+$commandClasses = $discovery->discover('src/Commands', '\Staempfli\MagentoBuilder\Commands');
+
+if (file_exists('mg2Builder/CommandFile.php')) {
+    require_once 'mg2Builder/CommandFile.php';
+    $commandClasses[] = \CommandFile::class;
+}
+
+$statusCode = \Robo\Robo::run(
+    $_SERVER['argv'],
+    $commandClasses,
+    'mg2-builder',
+    '1.0'
+);
+exit($statusCode);

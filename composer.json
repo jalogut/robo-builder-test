@@ -1,0 +1,34 @@
+{
+  "name": "staempfli/magento2-project-builder",
+  "description": "Staempfli AG Magento2 Project Builder",
+  "license": [
+    "GPL-3.0"
+  ],
+  "authors": [
+    {
+      "name": "Juan Alonso",
+      "email": "juan.alonso@staempfli.com"
+    }
+  ],
+  "require": {
+    "consolidation/Robo": "dev-inject-configuration"
+  },
+  "autoload": {
+    "psr-4": {
+      "Staempfli\\MagentoBuilder\\": "src"
+    }
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "bin": ["bin/mg2-builder"],
+  "scripts": {
+    "setPermissionsBin": "chmod -R +x bin",
+    "post-install-cmd": [
+      "@setPermissionsBin"
+    ],
+    "post-update-cmd": [
+      "@setPermissionsBin"
+    ]
+  }
+}
