@@ -12,6 +12,6 @@ class HooksFile extends \Robo\Tasks
     public function install(\Robo\Collection\Collection $collection)
     {
         $collection->after('first', $this->taskExec('echo after first'));
-        $collection->after('third', $this->taskExec('echo before fourth'));
+        $collection->before('fourth', $this->taskExec('echo before fourth'));
     }
 }
